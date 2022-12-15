@@ -12,4 +12,7 @@ resource "github_repository" "dotfiles" {
 resource "github_branch_protection" "dotfiles" {
   repository_id = github_repository.dotfiles.node_id
   pattern       = "master"
+  required_pull_request_reviews {
+    required_approving_review_count = 0
+  }
 }
