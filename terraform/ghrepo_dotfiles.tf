@@ -8,3 +8,8 @@ resource "github_repository" "dotfiles" {
   has_projects  = true
   has_wiki      = true
 }
+
+resource "github_branch_protection" "dotfiles" {
+  repository_id = github_repository.dotfiles.node_id
+  pattern       = "master"
+}
