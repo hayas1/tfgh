@@ -12,6 +12,6 @@ resource "github_branch_protection" "tfgh" {
   }
   required_status_checks {
     strict   = true
-    contexts = ["ci/actions: Terraform"]
+    contexts = ["github/terraform"]
   }
 }
