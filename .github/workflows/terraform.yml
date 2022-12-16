@@ -31,6 +31,9 @@ jobs:
   plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
     steps:
       - name: Terraform Plan
         id: plan
@@ -41,6 +44,9 @@ jobs:
   apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
     steps:
       - name: Terraform Apply
         if: github.event_name == 'push'
