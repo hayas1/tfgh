@@ -15,6 +15,7 @@ jobs:
         id: create-pull-request
         run: >
           gh pr create
+          --title 'into `main` from `$(echo ${GITHUB_REF#refs/heads/})`'
           --body 'Auto created pull request to main'
         continue-on-error: true
         env:
