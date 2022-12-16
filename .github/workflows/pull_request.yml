@@ -15,14 +15,17 @@ jobs:
         id: create-pull-request
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.repos.createPullRequest({
-              title: `into \`main\` from \`${{ github.ref }}\``,
-              body: "Auto created pull request to main",
-              head: context.ref,
-              base: "main"
-            })
+            const { repo, owner } = context.repo;
+            const result = await github.rest.pulls.create({
+              title: 'into `main` from `${{ github.ref }}`',
+              owner,
+              repo,
+              head: '${{ github.ref_name }}',
+              base: 'develop',
+              body: 'Auto generated pull request to `main`'
+            });
       #   continue-on-error: true
       # - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
   terraform:
