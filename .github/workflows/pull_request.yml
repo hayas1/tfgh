@@ -1,0 +1,23 @@
+name: Auto Pull Request
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create pull request
+        id: create-pull-request
+        run: >
+          gh pr create
+          --body 'Auto created pull request to main'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AUTHOR: ${{ github.event.pusher.name }}
+      - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
