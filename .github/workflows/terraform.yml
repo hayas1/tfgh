@@ -30,6 +30,7 @@ jobs:
 
   plan:
     name: Terraform Plan
+    needs: setup
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -43,6 +44,7 @@ jobs:
 
   apply:
     name: Terraform Apply
+    needs: setup
     runs-on: ubuntu-latest
     defaults:
       run:
