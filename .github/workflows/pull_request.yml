@@ -13,12 +13,18 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create pull request
         id: create-pull-request
-        run: >
-          gh pr create
-          --title 'into \`main\` from \`$(echo ${GITHUB_REF#refs/heads/})\`'
-          --body 'Auto created pull request to main'
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AUTHOR: ${{ github.event.pusher.name }}
-      - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.repos.createPullRequest({
+              title: `into \`main\` from \`${{ github.ref }}\``,
+              body: "Auto created pull request to main",
+              head: context.ref,
+              base: "main"
+            })
+      #   continue-on-error: true
+      # - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
+  terraform:
+    uses: hayas1/tfgh/.github/workflows/terraform.yml@main
+    needs: create-pr
