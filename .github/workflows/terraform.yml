@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: ["main"]
   workflow_call:
+    secrets:
+      TF_API_TOKEN:
+        required: true
 
 jobs:
   terraform:
