@@ -15,10 +15,13 @@ jobs:
         id: create-pull-request
         run: >
           gh pr create
-          --title "into `main` from `${{ github.ref }}`"
+          --title "into main from ${{ github.ref }}"
           --body 'Auto created pull request to `main`.'
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AUTHOR: ${{ github.event.pusher.name }}
-      - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
+        # continue-on-error: true
+      # - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
+  terraform:
+    uses: hayas1/tfgh/.github/workflows/terraform.yml@modify/tfgh-terraform-workflow-script
+    needs: create-pr
