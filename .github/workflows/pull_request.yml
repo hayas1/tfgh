@@ -13,16 +13,19 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create pull request
         id: create-pull-request
-        run: >
-          gh pr edit -t "$TITLE" -b "$BODY" && gh pr reopen
-          || gh pr create -t "$TITLE" -b "$BODY"
+        run: gh pr edit -t "$TITLE" -b "$BODY" && gh pr reopen
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AUTHOR: ${{ github.event.pusher.name }}
           TITLE: into main from ${{ github.ref }}
           BODY: Auto created pull request to `main`.
-        # continue-on-error: true
-      # - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
+        continue-on-error: true
+      - run: |
+          if [ "${{ steps.create-pull-request.outcome }}" == "success" ] then
+            echo 'New pull request was created.'
+          else
+            echo 'The pull request already seem to exist.'
+          fi
   terraform:
     uses: hayas1/tfgh/.github/workflows/terraform.yml@feat/tfgh-auto-pr
     secrets:
