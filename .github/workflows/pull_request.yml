@@ -21,7 +21,7 @@ jobs:
           BODY: Auto created pull request to `main`.
         continue-on-error: true
       - run: |
-          if [ "${{ steps.create-pull-request.outcome }}" == "success" ] then
+          if [ "${{ steps.create-pull-request.outcome }}" == "success" ]; then
             echo 'New pull request was created.'
           else
             echo 'The pull request already seem to exist.'
