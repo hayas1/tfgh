@@ -1,6 +1,6 @@
-resource "github_repository" "dotfiles" {
-  name        = "dotfiles"
-  description = "dotfiles for devcontainer"
+resource "github_repository" "dyson" {
+  name        = "dyson"
+  description = "dynamic json parser implemented by rust"
   visibility  = "public"
 
   has_downloads = true
@@ -21,10 +21,3 @@ resource "github_repository" "dotfiles" {
   }
 }
 
-resource "github_branch_protection" "dotfiles" {
-  repository_id = github_repository.dotfiles.node_id
-  pattern       = "master"
-  required_pull_request_reviews {
-    required_approving_review_count = 0
-  }
-}
