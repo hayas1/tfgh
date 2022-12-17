@@ -23,5 +23,5 @@ jobs:
         # continue-on-error: true
       # - run: echo "${{ steps.create-pull-request.outcome }} create new pull request"
   terraform:
-    uses: hayas1/tfgh/.github/workflows/terraform.yml@modify/tfgh-terraform-workflow-script
+    uses: hayas1/tfgh/.github/workflows/terraform.yml@feat/tfgh-auto-pr
     needs: create-pr
