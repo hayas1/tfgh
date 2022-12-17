@@ -15,7 +15,8 @@ jobs:
         id: create-pull-request
         run: >
           gh pr create
-          --body 'Auto created pull request to main'
+          --title "into `main` from `${{ github.ref }}`"
+          --body 'Auto created pull request to `main`.'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
