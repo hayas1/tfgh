@@ -28,7 +28,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   terraform:
-    uses: hayas1/tfgh/.github/workflows/terraform.yml@feat/tfgh-auto-pr
+    uses: hayas1/tfgh/.github/workflows/terraform.yml@main
     needs: create-pr
     with:
       branch: ${{ needs.get-pr-branch.outputs.pr-branch-ref }}
