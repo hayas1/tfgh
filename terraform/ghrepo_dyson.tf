@@ -7,5 +7,17 @@ resource "github_repository" "dyson" {
   has_issues    = true
   has_projects  = true
   has_wiki      = true
+
+  security_and_analysis {
+    advanced_security {
+      status = "enabled"
+    }
+    secret_scanning {
+      status = "enabled"
+    }
+    secret_scanning_push_protection {
+      status = "enabled"
+    }
+  }
 }
 
