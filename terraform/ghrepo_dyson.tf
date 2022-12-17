@@ -12,7 +12,11 @@
 #       branch = "GitHub Actions"
 #     }
 #   }
-
+#
+#   lifecycle {
+#     prevent_destroy = true
+#   }
+#
 #   security_and_analysis {
 #     advanced_security {
 #       status = "enabled"

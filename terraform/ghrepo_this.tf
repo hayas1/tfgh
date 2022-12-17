@@ -3,6 +3,10 @@ resource "github_repository" "tfgh" {
   description = "managed by terraform"
   visibility  = "public"
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   security_and_analysis {
     advanced_security {
       status = "enabled"
