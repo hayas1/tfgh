@@ -8,6 +8,10 @@ resource "github_repository" "dotfiles" {
   has_projects  = true
   has_wiki      = true
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   security_and_analysis {
     advanced_security {
       status = "enabled"
@@ -21,10 +25,3 @@ resource "github_repository" "dotfiles" {
   }
 }
 
-resource "github_branch_protection" "dotfiles" {
-  repository_id = github_repository.dotfiles.node_id
-  pattern       = "master"
-  required_pull_request_reviews {
-    required_approving_review_count = 0
-  }
-}
