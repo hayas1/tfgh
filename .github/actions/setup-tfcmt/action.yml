@@ -1,0 +1,26 @@
+name: Setup tfcmt
+
+inputs:
+  version:
+    description: 'install version of tfcmt (eg: latest, v0.1.0, ...)'
+    required: false
+    default: latest
+runs:
+  using: composite
+  steps:
+    - name: Get latest version from GitHub releases
+      id: version
+      if: ${{ inputs.version == 'latest' }}
+      shell: bash
+      run: |
+        version=$(
+          curl -w "%{redirect_url}" -s -o /dev/null https://github.com/suzuki-shunsuke/tfcmt/releases/latest |
+            sed -e "s|https://github.com/suzuki-shunsuke/tfcmt/releases/tag/\(.*\)|\1|g"
+        )
+        echo "version=$version" >>$GITHUB_OUTPUT
+    - name: Setup tfcmt
+      shell: bash
+      run: |
+        INSTALL_VERSION=${{ inputs.version == 'latest' && steps.version.outputs.version || inputs.version }}
+        wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${INSTALL_VERSION}/tfcmt_linux_amd64.tar.gz" -O - |
+          tar xzf - tfcmt -C /usr/local/bin
