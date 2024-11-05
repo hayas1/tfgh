@@ -7,6 +7,8 @@ terraform {
       name = "tfgh"
     }
   }
+
+  required_version = "~> 1.9"
 }
 
 provider "github" {
