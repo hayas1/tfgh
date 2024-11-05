@@ -6,16 +6,13 @@ resource "github_repository" "tfgh" {
   lifecycle {
     prevent_destroy = true
   }
-
-  security_and_analysis {
-    advanced_security {
-      status = "enabled"
-    }
-    secret_scanning {
-      status = "enabled"
-    }
-    secret_scanning_push_protection {
-      status = "enabled"
-    }
-  }
 }
+
+resource "github_repository_environment" "plan" {
+  environment = "plan"
+  repository  = github_repository.tfgh.name
+}
+# data "github_actions_environment_secrets" "plan" {
+#   repository  = github_repository.tfgh.name
+#   environment = github_repository_environment.plan.environment
+# }
