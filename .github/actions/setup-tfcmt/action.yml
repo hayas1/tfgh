@@ -23,4 +23,4 @@ runs:
       run: |
         INSTALL_VERSION=${{ inputs.version == 'latest' && steps.version.outputs.version || inputs.version }}
         wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${INSTALL_VERSION}/tfcmt_linux_amd64.tar.gz" -O - |
-          tar xzf - tfcmt -C /usr/local/bin
+          tar xzf - -C /usr/local/bin tfcmt
