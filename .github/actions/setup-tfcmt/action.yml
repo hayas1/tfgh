@@ -20,6 +20,8 @@ runs:
         echo "version=$version" >>$GITHUB_OUTPUT
     - name: Setup tfcmt
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         INSTALL_VERSION=${{ inputs.version == 'latest' && steps.version.outputs.version || inputs.version }}
         wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${INSTALL_VERSION}/tfcmt_linux_amd64.tar.gz" -O - |
