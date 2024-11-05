@@ -31,3 +31,11 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
+
+      - uses: ./.github/actions/setup-tfcmt
+        with:
+          version: 'latest'
+      - name: Terraform Plan
+        id: plan
+        run: |
+          tfcmt plan -- terraform plan -no-color -input=false
