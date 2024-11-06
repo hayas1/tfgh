@@ -15,6 +15,12 @@ on:
       TF_API_TOKEN:
         description: 'Terraform Cloud API Token'
         required: true
+      APP_ID:
+        description: 'GitHub App ID'
+        required: true
+      APP_PRIVATE_KEY:
+        description: 'GitHub App Private Key'
+        required: true
 
 
 jobs:
