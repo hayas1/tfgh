@@ -33,15 +33,11 @@ runs:
   using: composite
   steps:
     - name: Get latest version from GitHub releases
+      uses: ./.github/actions/latest-version
       id: latest-version
-      if: ${{ inputs.version == 'latest' }}
-      shell: bash
-      run: |
-        version=$(
-          curl -w "%{redirect_url}" -s -o /dev/null https://github.com/suzuki-shunsuke/tfcmt/releases/latest |
-            sed -e "s|https://github.com/suzuki-shunsuke/tfcmt/releases/tag/\(.*\)|\1|g"
-        )
-        echo "version=$version" >>$GITHUB_OUTPUT
+      with:
+        owner: suzuki-shunsuke
+        repo: tfcmt
     - name: Install version
       id: install-version
       shell: bash
