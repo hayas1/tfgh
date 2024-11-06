@@ -12,7 +12,7 @@ resource "github_repository_environment" "plan" {
   environment = "plan"
   repository  = github_repository.tfgh.name
 }
-# data "github_actions_environment_secrets" "plan" {
-#   repository  = github_repository.tfgh.name
-#   environment = github_repository_environment.plan.environment
-# }
+resource "github_repository_environment" "apply" {
+  environment = "apply"
+  repository  = github_repository.tfgh.name
+}
