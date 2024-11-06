@@ -1,4 +1,4 @@
-name: Terraform plan on pull request
+name: Terraform plan on pull request target
 
 on:
   pull_request_target:
