@@ -15,9 +15,6 @@ on:
       TF_API_TOKEN:
         description: 'Terraform Cloud API Token'
         required: true
-      GITHUB_TOKEN:
-        description: 'github token'
-        required: true
 
 
 jobs:
