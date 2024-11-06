@@ -20,6 +20,8 @@ on:
 jobs:
   plan:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.terraform }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Setup Terraform

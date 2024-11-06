@@ -6,10 +6,7 @@ on:
 
 jobs:
   plan:
-    runs-on: ubuntu-latest
-    environment: plan
-    timeout-minutes: 15
-    uses: ./.github/workflows/terraform.yml
+    uses: .github/workflows/terraform.yml
     with:
       terraform: plan
     secrets: inherit
