@@ -1,4 +1,3 @@
-# reference: https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 name: Terraform
 
 on:
@@ -12,33 +11,19 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     environment: plan
-    defaults:
-      run:
-        working-directory: terraform
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/terraform-test
         with:
-          terraform_version: 1.9.8
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - name: Terraform Init
-        id: init
-        run: terraform init
-
-      - name: Check Format
-        id: fmt
-        run: terraform fmt --check
-      # - name: Terraform Validate
-      #   id: validate
-      #   run: terraform validate --no-color
+          version: 1.9.8
+          directory: terraform
+          api-token: ${{ secrets.TF_API_TOKEN }}
 
       - uses: ./.github/actions/setup-tfcmt
         with:
           version: latest
       - name: Terraform Plan
-        id: plan
+        working-directory: terraform
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
