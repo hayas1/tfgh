@@ -49,10 +49,24 @@ runs:
         wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${{ steps.install-version.outputs.version }}/tfcmt_linux_amd64.tar.gz" -O - |
           tar xzf - -C /usr/local/bin tfcmt
 
+    - name: Terraform run args
+      shell: bash
+      id: run-args
+      run: |
+        case "${{ inputs.terraform }}" in
+          plan)
+            echo "cmd=" >>$GITHUB_OUTPUT
+            ;;
+          apply)
+            echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
+            ;;
+          *)
+            exit 1
+        esac
     - name: Terraform ${{ inputs.terraform }}
       shell: bash
       working-directory: ${{ inputs.directory }}
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} -patch=${{ inputs.patch }} -- terraform ${{ inputs.terraform }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} -patch=${{ inputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
