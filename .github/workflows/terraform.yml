@@ -24,6 +24,12 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 1048105
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -37,4 +43,4 @@ jobs:
           version: latest
           directory: terraform
           terraform: ${{ inputs.terraform }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ steps.generate-token.outputs.token }}
