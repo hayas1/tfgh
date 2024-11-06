@@ -22,7 +22,6 @@ on:
         description: 'GitHub App Private Key'
         required: true
 
-
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -30,13 +29,13 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: hayas1
+      # - name: Generate a token
+      #   id: generate-token
+      #   uses: actions/create-github-app-token@v1
+      #   with:
+      #     app-id: ${{ secrets.APP_ID }}
+      #     private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      #     owner: hayas1
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -50,4 +49,5 @@ jobs:
           version: latest
           directory: terraform
           terraform: ${{ inputs.terraform }}
-          github-token: ${{ steps.generate-token.outputs.token }}
+          # github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
