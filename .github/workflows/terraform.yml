@@ -21,7 +21,7 @@ jobs:
       - uses: ./.github/actions/terraform-test
         with:
           directory: terraform
-      - uses: ./.github/actions/run-tfcmt
+      - uses: ./.github/actions/tfcmt-cmd
         with:
           version: latest
           directory: terraform
