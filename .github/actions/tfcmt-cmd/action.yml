@@ -56,9 +56,11 @@ runs:
         case "${{ inputs.terraform }}" in
           plan)
             echo "cmd=" >>$GITHUB_OUTPUT
+            echo "patch=${{ inputs.patch }}" >>$GITHUB_OUTPUT
             ;;
           apply)
             echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
+            echo "patch=" >>$GITHUB_OUTPUT
             ;;
           *)
             exit 1
@@ -69,4 +71,4 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} -patch=${{ inputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} ${{ steps.run-args.outputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
