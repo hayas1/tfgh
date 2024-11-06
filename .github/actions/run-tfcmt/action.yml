@@ -48,13 +48,10 @@ runs:
         wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${{ steps.install-version.outputs.version }}/tfcmt_linux_amd64.tar.gz" -O - |
           tar xzf - -C /usr/local/bin tfcmt
 
-    - name: Terraform init
-      shell: bash
-      run: terraform init
     - name: Terraform ${{ inputs.terraform }}
       shell: bash
       working-directory: ${{ inputs.directory }}
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} -patch -- terraform ${{ inputs.terraform }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} -- terraform ${{ inputs.terraform }} -no-color -input=false
