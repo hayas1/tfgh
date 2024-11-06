@@ -1,16 +1,28 @@
-name: Terraform
+name: Terraform plan / apply
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_call:
+    inputs:
+      terraform:
+        description: 'terraform command'
+        required: true
+        type: string # reusable workflow does not support type: choice
+        # type: choice
+        # options:
+        #   - plan
+        #   - apply
+    secrets:
+      TF_API_TOKEN:
+        description: 'Terraform Cloud API Token'
+        required: true
+      GITHUB_TOKEN:
+        description: 'github token'
+        required: true
+
 
 jobs:
   plan:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    environment: plan
     steps:
       - uses: actions/checkout@v4
       - name: Setup Terraform
@@ -25,5 +37,5 @@ jobs:
         with:
           version: latest
           directory: terraform
-          terraform: plan
+          terraform: ${{ inputs.terraform }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

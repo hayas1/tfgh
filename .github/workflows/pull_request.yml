@@ -1,0 +1,15 @@
+name: Terraform plan on pull request
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    environment: plan
+    timeout-minutes: 15
+    uses: ./.github/workflows/terraform.yml@feat/use-tfcmt # TODO
+    with:
+      terraform: plan
+    secrets: inherit
