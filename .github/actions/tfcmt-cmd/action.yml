@@ -56,7 +56,7 @@ runs:
         case "${{ inputs.terraform }}" in
           plan)
             echo "cmd=" >>$GITHUB_OUTPUT
-            echo "patch=${{ inputs.patch }}" >>$GITHUB_OUTPUT
+            echo "patch=-patch=${{ inputs.patch }}" >>$GITHUB_OUTPUT
             ;;
           apply)
             echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
