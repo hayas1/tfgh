@@ -1,10 +1,24 @@
-name: Setup tfcmt
+name: Run tfcmt
 
 inputs:
   version:
     description: 'install version of tfcmt (eg: latest, v0.1.0, ...)'
     required: false
     default: latest
+  directory:
+    description: 'terraform directory'
+    required: false
+    default: .
+  terraform:
+    description: 'terraform command'
+    required: true
+    type: choice
+    options:
+      - plan
+      - apply
+  github-token:
+    description: 'github token'
+    required: true
 outputs:
   version:
     description: 'installed version of tfcmt (eg: v0.1.0, ...)'
@@ -33,3 +47,14 @@ runs:
       run: |
         wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${{ steps.install-version.outputs.version }}/tfcmt_linux_amd64.tar.gz" -O - |
           tar xzf - -C /usr/local/bin tfcmt
+
+    - name: Terraform init
+      shell: bash
+      run: terraform init
+    - name: Terraform ${{ inputs.terraform }}
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        tfcmt ${{ inputs.terraform }} -patch -- terraform ${{ inputs.terraform }} -no-color -input=false

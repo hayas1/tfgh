@@ -13,18 +13,17 @@ jobs:
     environment: plan
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - uses: ./.github/actions/terraform-test
         with:
-          version: 1.9.8
           directory: terraform
-          api-token: ${{ secrets.TF_API_TOKEN }}
-
-      - uses: ./.github/actions/setup-tfcmt
+      - uses: ./.github/actions/run-tfcmt
         with:
           version: latest
-      - name: Terraform Plan
-        working-directory: terraform
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tfcmt plan -patch -- terraform plan -no-color -input=false
+          directory: terraform
+          terraform: plan
+          github-token: ${{ secrets.GITHUB_TOKEN }}
