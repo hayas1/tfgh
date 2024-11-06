@@ -30,4 +30,4 @@ runs:
       run: terraform fmt --check
     - name: Terraform Validate
       shell: bash
-      run: terraform validate --no-color
+      run: terraform validate -no-color
