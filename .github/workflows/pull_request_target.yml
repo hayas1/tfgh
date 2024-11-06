@@ -1,0 +1,13 @@
+name: Terraform plan on pull request
+
+on:
+  pull_request_target:
+    branches: ["main"]
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo TODO label trigger and plan on merged branch
+
