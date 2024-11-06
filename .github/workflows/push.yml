@@ -1,0 +1,12 @@
+name: Terraform apply on push
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  plan:
+    uses: ./.github/workflows/terraform.yml
+    with:
+      terraform: apply
+    secrets: inherit

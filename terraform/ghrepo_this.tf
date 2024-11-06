@@ -1,21 +1,12 @@
-resource "github_repository" "tfgh" {
-  name        = "tfgh"
-  description = "managed by terraform"
-  visibility  = "public"
+data "github_repository" "tfgh" {
+  full_name = "hayas1/tfgh"
+}
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  security_and_analysis {
-    advanced_security {
-      status = "enabled"
-    }
-    secret_scanning {
-      status = "enabled"
-    }
-    secret_scanning_push_protection {
-      status = "enabled"
-    }
-  }
+resource "github_repository_environment" "plan" {
+  environment = "plan"
+  repository  = data.github_repository.tfgh.name
+}
+resource "github_repository_environment" "apply" {
+  environment = "apply"
+  repository  = data.github_repository.tfgh.name
 }

@@ -1,0 +1,72 @@
+name: Run tfcmt
+
+inputs:
+  version:
+    description: 'install version of tfcmt (eg: latest, v0.1.0, ...)'
+    required: false
+    default: latest
+  directory:
+    description: 'terraform directory'
+    required: false
+    default: .
+  patch:
+    description: 'tfcmt with patch option'
+    required: false
+    type: boolean
+    default: true
+  terraform:
+    description: 'terraform command'
+    required: true
+    type: choice
+    options:
+      - plan
+      - apply
+  github-token:
+    description: 'github token'
+    required: true
+outputs:
+  version:
+    description: 'installed version of tfcmt (eg: v0.1.0, ...)'
+    value: ${{ steps.install-version.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get latest version from GitHub releases
+      uses: ./.github/actions/latest-version
+      id: latest-version
+      with:
+        owner: suzuki-shunsuke
+        repo: tfcmt
+    - name: Install version
+      id: install-version
+      shell: bash
+      run: |
+        echo "version=${{ inputs.version == 'latest' && steps.latest-version.outputs.version || inputs.version }}" >>$GITHUB_OUTPUT
+    - name: Setup tfcmt
+      shell: bash
+      run: |
+        wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${{ steps.install-version.outputs.version }}/tfcmt_linux_amd64.tar.gz" -O - |
+          tar xzf - -C /usr/local/bin tfcmt
+
+    - name: Terraform run args
+      shell: bash
+      id: run-args
+      run: |
+        case "${{ inputs.terraform }}" in
+          plan)
+            echo "cmd=" >>$GITHUB_OUTPUT
+            ;;
+          apply)
+            echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
+            ;;
+          *)
+            exit 1
+        esac
+    - name: Terraform ${{ inputs.terraform }}
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        tfcmt ${{ inputs.terraform }} -patch=${{ inputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false

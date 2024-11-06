@@ -1,0 +1,23 @@
+name: Terraform test
+
+inputs:
+  directory:
+    description: 'terraform directory'
+    required: false
+    default: terraform
+
+runs:
+  using: composite
+  steps:
+    - name: Terraform Init
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: terraform init
+    - name: Check Format
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: terraform fmt --check
+    - name: Terraform Validate
+      shell: bash
+      working-directory: ${{ inputs.directory }}
+      run: terraform validate -no-color
