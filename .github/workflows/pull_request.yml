@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: plan
     timeout-minutes: 15
-    uses: ./.github/workflows/terraform.yml@feat/use-tfcmt # TODO
+    uses: ./.github/workflows/terraform.yml
     with:
       terraform: plan
     secrets: inherit
