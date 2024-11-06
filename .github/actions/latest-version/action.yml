@@ -20,7 +20,7 @@ runs:
       shell: bash
       run: |
         version=$(
-          curl -w "%{redirect_url}" -s -o /dev/null https://github.com/${{ inputs.owner }}/${{ inputs.repo }}/releases/latest |
+          curl -w "%{redirect_url}" -s -o /dev/null "https://github.com/${{ inputs.owner }}/${{ inputs.repo }}/releases/latest" |
             sed -e "s|https://github.com/${{ inputs.owner }}/${{ inputs.repo }}/releases/tag/\(.*\)|\1|g"
         )
         echo "version=$version" >>$GITHUB_OUTPUT
