@@ -9,6 +9,11 @@ inputs:
     description: 'terraform directory'
     required: false
     default: .
+  patch:
+    description: 'tfcmt with patch option'
+    required: false
+    type: boolean
+    default: true
   terraform:
     description: 'terraform command'
     required: true
@@ -54,4 +59,4 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} -- terraform ${{ inputs.terraform }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} -patch=${{ inputs.patch }} -- terraform ${{ inputs.terraform }} -no-color -input=false
