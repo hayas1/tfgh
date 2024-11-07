@@ -52,3 +52,14 @@ These GitHub Environments host some secrets for terraform plan/apply in GitHub A
 
 > [!IMPORTANT]
 > These secrets are **not** managed by terraform. Managing secrets in terraform is not recommended because they are stored in plain text in tfstate
+
+# Operations
+## Terraform Plan / Apply in local machine
+```sh
+cd terraform
+terraform login
+terraform init
+terraform plan
+terraform apply
+```
+`terraform login` require authorization token from Terraform Cloud.
