@@ -19,6 +19,9 @@ resource "github_repository_ruleset" "tfgh" {
     creation = true
     deletion = true
 
+    non_fast_forward = true
+
+
     pull_request {}
   }
 }
