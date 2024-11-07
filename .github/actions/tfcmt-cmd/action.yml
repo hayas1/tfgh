@@ -34,6 +34,8 @@ runs:
   steps:
     - name: Setup tfcmt
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
         gh release download ${{ inputs.version }} --repo suzuki-shunsuke/tfcmt -p tfcmt_linux_amd64.tar.gz -O - |
           tar xzf - -C /usr/local/bin tfcmt
