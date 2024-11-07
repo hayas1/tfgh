@@ -15,6 +15,12 @@ resource "github_repository_ruleset" "tfgh" {
     }
   }
 
+  bypass_actors {
+    actor_id    = 5
+    actor_type  = "RepositoryRole"
+    bypass_mode = "pull_request"
+  }
+
   rules {
     creation = true
     deletion = true
