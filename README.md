@@ -32,7 +32,7 @@ For terraform plan/apply in GitHub Actions, GitHub App is configured.
 - Terraform Apply: https://github.com/settings/apps/terraform-apply
 
 > [!WARNING]
-> These GitHub Apps are not managed by terraform. Managing GitHub Apps itself is not supported in GitHub provider now. Data source is only available in v6.3.1.
+> These GitHub Apps are **not** managed by terraform. Managing GitHub Apps itself is not supported in GitHub provider now. Data source is only available in v6.3.1.
 > https://registry.terraform.io/providers/integrations/github/latest/docs
 
 ## GitHub Environments: Terraform Plan / Apply
@@ -50,3 +50,5 @@ These GitHub Environments host some secrets for terraform plan/apply in GitHub A
 | APP_PRIVATE_KEY | GitHub Apps settings page too. **Not Client secrets, just Private keys.**                                                                    |
 | TF_API_TOKEN    | Terraform Cloud [user setting](https://app.terraform.io/app/settings/tokens) page. For both plan/apply.                                      |
 
+> [!IMPORTANT]
+> These secrets are **not** managed by terraform. Managing secrets in terraform is not recommended because they are stored in plain text in tfstate
