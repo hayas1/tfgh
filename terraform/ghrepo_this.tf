@@ -17,7 +17,6 @@ resource "github_repository_ruleset" "tfgh" {
 
   rules {
     creation = true
-    update   = true
     deletion = true
 
     pull_request {}
