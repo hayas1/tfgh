@@ -46,7 +46,6 @@ jobs:
           directory: terraform
       - uses: ./.github/actions/tfcmt-cmd
         with:
-          version: latest
           directory: terraform
           terraform: ${{ inputs.terraform }}
           github-token: ${{ steps.app-token.outputs.token }}
