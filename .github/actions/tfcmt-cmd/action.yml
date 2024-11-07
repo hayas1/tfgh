@@ -2,9 +2,9 @@ name: Run tfcmt
 
 inputs:
   version:
-    description: 'install version of tfcmt (eg: latest, v0.1.0, ...)'
+    description: 'install version of tfcmt(eg: v0.1.0, ...)'
     required: false
-    default: latest
+    default:
   directory:
     description: 'terraform directory'
     required: false
@@ -32,21 +32,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get latest version from GitHub releases
-      uses: ./.github/actions/latest-version
-      id: latest-version
-      with:
-        owner: suzuki-shunsuke
-        repo: tfcmt
-    - name: Install version
-      id: install-version
-      shell: bash
-      run: |
-        echo "version=${{ inputs.version == 'latest' && steps.latest-version.outputs.version || inputs.version }}" >>$GITHUB_OUTPUT
     - name: Setup tfcmt
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        wget "https://github.com/suzuki-shunsuke/tfcmt/releases/download/${{ steps.install-version.outputs.version }}/tfcmt_linux_amd64.tar.gz" -O - |
+        gh release download ${{ inputs.version }} --repo suzuki-shunsuke/tfcmt -p tfcmt_linux_amd64.tar.gz -O - |
           tar xzf - -C /usr/local/bin tfcmt
 
     - name: Terraform run args
