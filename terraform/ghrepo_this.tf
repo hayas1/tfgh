@@ -21,6 +21,9 @@ resource "github_repository_ruleset" "tfgh" {
 
     non_fast_forward = true
 
+    required_deployments {
+      required_deployment_environments = [github_repository_environment.plan.id]
+    }
 
     pull_request {}
   }
