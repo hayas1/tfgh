@@ -16,7 +16,8 @@ resource "github_repository_ruleset" "tfgh" {
   }
 
   bypass_actors {
-    actor_id    = 5
+    # https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset#bypass_actors
+    actor_id    = 5 # Admin
     actor_type  = "RepositoryRole"
     bypass_mode = "pull_request"
   }
