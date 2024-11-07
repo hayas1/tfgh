@@ -5,20 +5,22 @@ Repositories are managed by Terraform.
 <!-- https://icones.js.org/collection/logos -->
 ```mermaid
 architecture-beta
-    %% group api(logos:github-icon)[GitHub]
-    group api(internet)[GitHub]
+    %% group repositories(logos:github-icon)[GitHub]
+    group repositories(internet)[GitHub]
 
-    service this(server)[this] in api
-    service repos(disk)[Repositories] in api
+    service this(server)[tfgh] in repositories
+    service repos(disk)[Repositories] in repositories
 
-    %% this:B -- T:repos
 
-    %% group backends(logos:terraform-icon)[Terraform Cloud]
-    group backends(cloud)[Terraform Cloud]
-    service backend(database)[tfstate] in backends
+    %% group backend(logos:terraform-icon)[Terraform Cloud]
+    group backend(cloud)[Terraform Cloud]
+    service tfstate(database)[tfstate] in backend
 
-    this:R --> L:backend
-    repos{group}:R <-- B:backend{group}
+    junction gha
+
+    this:R -- L:gha
+    gha:R --> L:tfstate
+    repos{group}:R <-- B:gha
 ```
 
 ## Backend: Terraform Cloud
