@@ -1,10 +1,17 @@
-data "github_repository" "this" {
-  for_each  = var.repositories
-  full_name = join("/", [each.value.owner, each.key])
+resource "github_repository" "this" {
+  for_each = var.repositories
+  name     = each.key
+
+  visibility             = each.value.visibility
+  delete_branch_on_merge = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "github_repository_ruleset" "this" {
-  for_each    = data.github_repository.this
+  for_each    = github_repository.this
   name        = "default"
   repository  = each.value.name
   target      = "branch"
@@ -29,13 +36,6 @@ resource "github_repository_ruleset" "this" {
     deletion = true
 
     non_fast_forward = true
-
-    dynamic "required_deployments" {
-      for_each = length(var.repositories[each.key].pr_required_environments) == 0 ? [] : [var.repositories[each.key].pr_required_environments]
-      content {
-        required_deployment_environments = required_deployments.value
-      }
-    }
 
     # TODO required_check is required, but GUI can set it empty
     # required_status_checks {
