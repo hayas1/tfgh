@@ -56,6 +56,20 @@ These GitHub Environments host some secrets for terraform plan/apply in GitHub A
 > These secrets are **not** managed by terraform. Managing secrets in terraform is not recommended because they are stored in plain text in tfstate
 
 # Operations
+## Add or import repository
+Add repository to [/terraform/repositories.tf](/terraform/repositories.tf).
+### Import
+```sh
+terraform import 'module.repositories.github_repository.this["tfgh"]' tfgh
+```
+
+## Delete or remove repository
+Delete repository from [/terraform/repositories.tf](/terraform/repositories.tf).
+### Remove
+```sh
+terraform state rm 'module.repositories.github_repository.this["tfgh"]'
+```
+
 ## Terraform Plan / Apply in local machine
 Authenticate to GitHub and Terraform Cloud. `terraform login` require authorization token from Terraform Cloud.
 ```sh
