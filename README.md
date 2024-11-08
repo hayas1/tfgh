@@ -57,11 +57,16 @@ These GitHub Environments host some secrets for terraform plan/apply in GitHub A
 
 # Operations
 ## Terraform Plan / Apply in local machine
+Authenticate to GitHub and Terraform Cloud. `terraform login` require authorization token from Terraform Cloud.
+```sh
+gh auth login
+terraform login
+```
+
+Now, we can execute terraform plan/apply in local machine.
 ```sh
 cd terraform
-terraform login
 terraform init
 terraform plan
 terraform apply
 ```
-`terraform login` require authorization token from Terraform Cloud.
