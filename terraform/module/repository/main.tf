@@ -30,9 +30,13 @@ resource "github_repository_ruleset" "this" {
 
     non_fast_forward = true
 
-    # required_deployments {
-    #   required_deployment_environments = [github_repository_environment.plan.environment]
-    # }
+    dynamic "required_deployments" {
+      for_each = length(var.repositories[each.key].pr_required_environments) == 0 ? [] : [var.repositories[each.key].pr_required_environments]
+      content {
+        required_deployment_environments = required_deployments.value
+      }
+    }
+
     # TODO required_check is required, but GUI can set it empty
     # required_status_checks {
     #   strict_required_status_checks_policy = true
