@@ -1,7 +1,7 @@
 locals {
   repositories = {
     tfgh = {
-      pr_required_environments = ["plan"]
+      description = "managed by terraform"
     }
   }
 }
