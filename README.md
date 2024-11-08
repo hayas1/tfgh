@@ -37,6 +37,10 @@ For terraform plan/apply in GitHub Actions, GitHub App is configured.
 > These GitHub Apps are **not** managed by terraform. Managing GitHub Apps itself is not supported in GitHub provider now. Data source is only available in v6.3.1.
 > https://registry.terraform.io/providers/integrations/github/latest/docs
 
+> [!NOTE]
+> Terraform Plan apps has content:write permission. If it is not granted, terraform plan cause unexpected behavior and confusing diffs.
+> https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository
+
 ## GitHub Environments: Terraform Plan / Apply
 For terraform plan/apply in GitHub Actions, GitHub Environment is configured.
 - plan/apply: https://github.com/hayas1/tfgh/settings/environments
