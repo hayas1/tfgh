@@ -1,12 +1,3 @@
-module "repositories" {
-  source = "./module/repository"
-  repositories = {
-    tfgh = {
-      pr_required_environments = ["plan"]
-    }
-  }
-}
-
 resource "github_repository_environment" "plan" {
   environment = "plan"
   repository  = module.repositories.imported.tfgh.name
