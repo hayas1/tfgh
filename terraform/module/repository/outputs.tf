@@ -1,3 +1,3 @@
-output "imported" {
-  value = data.github_repository.this
+output "managed" {
+  value = github_repository.this
 }
