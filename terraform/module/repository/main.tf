@@ -57,7 +57,7 @@ locals {
 }
 
 resource "github_repository_file" "pull_request_template" {
-  for_each            = data.github_repository.this
+  for_each            = github_repository.this
   repository          = each.value.name
   branch              = local.managed_pr_branch
   file                = ".github/pull_request_template.md"
@@ -70,7 +70,7 @@ resource "github_repository_file" "pull_request_template" {
 }
 
 resource "github_repository_pull_request" "managed" {
-  for_each        = data.github_repository.this
+  for_each        = github_repository.this
   base_repository = each.value.name
   base_ref        = each.value.default_branch
   head_ref        = local.managed_pr_branch
