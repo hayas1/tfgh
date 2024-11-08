@@ -45,3 +45,14 @@ resource "github_repository_ruleset" "this" {
     pull_request {}
   }
 }
+
+
+resource "github_repository_file" "pull_request_template" {
+  for_each            = data.github_repository.this
+  repository          = each.key
+  branch              = each.value.default_branch
+  file                = ".github/pull_request_template.md"
+  content             = file("${path.module}/pull_request_template.md")
+  commit_message      = "pull_request_template managed by Terraform"
+  overwrite_on_create = true
+}
