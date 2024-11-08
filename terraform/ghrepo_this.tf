@@ -31,6 +31,10 @@ resource "github_repository_ruleset" "tfgh" {
     required_deployments {
       required_deployment_environments = [github_repository_environment.plan.environment]
     }
+    # TODO required_check is required, but GUI can set it empty
+    # required_status_checks {
+    #   strict_required_status_checks_policy = true
+    # }
 
     pull_request {}
   }
