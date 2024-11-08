@@ -1,10 +1,12 @@
-data "github_repository" "tfgh" {
-  full_name = "hayas1/tfgh"
+data "github_repository" "this" {
+  for_each  = var.repositories
+  full_name = join("/", [each.value.owner, each.key])
 }
 
-resource "github_repository_ruleset" "tfgh" {
+resource "github_repository_ruleset" "this" {
+  for_each    = data.github_repository.this
   name        = "default"
-  repository  = data.github_repository.tfgh.name
+  repository  = each.value.name
   target      = "branch"
   enforcement = "active"
 
@@ -28,28 +30,18 @@ resource "github_repository_ruleset" "tfgh" {
 
     non_fast_forward = true
 
-    required_deployments {
-      required_deployment_environments = [github_repository_environment.plan.environment]
+    dynamic "required_deployments" {
+      for_each = length(var.repositories[each.key].pr_required_environments) == 0 ? [] : [var.repositories[each.key].pr_required_environments]
+      content {
+        required_deployment_environments = required_deployments.value
+      }
     }
+
     # TODO required_check is required, but GUI can set it empty
     # required_status_checks {
     #   strict_required_status_checks_policy = true
     # }
 
     pull_request {}
-  }
-}
-
-resource "github_repository_environment" "plan" {
-  environment = "plan"
-  repository  = data.github_repository.tfgh.name
-}
-resource "github_repository_environment" "apply" {
-  environment = "apply"
-  repository  = data.github_repository.tfgh.name
-
-  deployment_branch_policy {
-    protected_branches     = true
-    custom_branch_policies = false
   }
 }
