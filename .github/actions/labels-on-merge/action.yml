@@ -28,7 +28,7 @@ runs:
       id: commit
       shell: bash
       run: |
-        head = $(git show --format='%H' --no-patch)
+        head=$(git show --format='%H' --no-patch)
         echo "head=$head" >>$GITHUB_OUTPUT
     - name: Find associated latest pull request
       id: pull-request
