@@ -15,7 +15,6 @@ jobs:
       - uses: ./.github/actions/labels-on-merge
         id: labels-on-merge
         with:
-          commit: ${{ github.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: echo ${{ steps.labels-on-merge.outputs.labels }}
 
