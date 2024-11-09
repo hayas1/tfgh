@@ -25,7 +25,7 @@ resource "github_repository_file" "this" {
   repository          = each.value.repository.name
   branch              = local.managed_pr_branch
   file                = ".${each.value.local_path}"
-  content             = file("${path.module}/${each.value.local_path}")
+  content             = join("\n", [file("${path.module}/${each.value.local_path}"), try(var.repositories[each.value.repository.name].additional_file_content[each.value.local_path], "")])
   commit_message      = "${local.managed_pr_commit_message_prefix}: .${each.value.local_path}"
   overwrite_on_create = true
 

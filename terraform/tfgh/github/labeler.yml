@@ -1,0 +1,4 @@
+update-files:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'terraform/module/repository/github/**'
