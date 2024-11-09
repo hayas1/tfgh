@@ -10,6 +10,24 @@ resource "github_repository" "this" {
   }
 }
 
+resource "github_branch" "default" {
+  repository = github_repository.this.name
+  branch     = var.repo.default_branch
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "github_branch_default" "this" {
+  repository = github_repository.this.name
+  branch     = github_branch.default.branch
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "github_repository_ruleset" "this" {
   name        = "default"
   repository  = github_repository.this.name

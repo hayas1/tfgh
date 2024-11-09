@@ -23,12 +23,12 @@ resource "github_repository_file" "this" {
   overwrite_on_create = true
 
   autocreate_branch               = true
-  autocreate_branch_source_branch = github_repository.this.default_branch
+  autocreate_branch_source_branch = github_branch_default.this.branch
 }
 
 resource "github_repository_pull_request" "managed" {
   base_repository = github_repository.this.name
-  base_ref        = github_repository.this.default_branch
+  base_ref        = github_branch_default.this.branch
   head_ref        = local.managed_pr_branch
   title           = local.managed_pr_title
   body            = local.managed_pr_body
