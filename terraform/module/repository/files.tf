@@ -1,5 +1,5 @@
 locals {
-  managed_pr_branch                = "chore/managed-by-terraform"
+  managed_pr_branch                = "chore/managed-by-terraform-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
   managed_pr_commit_message_prefix = "Managed by Terraform"
   managed_pr_title                 = "files managed by Terraform"
   managed_pr_body = join("\n", [
