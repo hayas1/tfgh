@@ -1,0 +1,46 @@
+name: Find pull request labels on merge
+
+inputs:
+  commit:
+    description: 'merge commit sha'
+    required: true
+  github-token:
+    description: 'github token'
+    required: true
+outputs:
+  pull-request:
+    description: 'pull request number'
+    value: ${{ steps.pull-request.outputs.number }}
+  labels:
+    description: 'pull request labels'
+    value: ${{ steps.labels.outputs.name }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - name: Find associated latest pull request
+      id: pull-request
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        number=$(
+         gh pr list --state closed --search '${{ inputs.commit }}' \
+          --json number,mergedAt \
+          --jq '. | max_by(.mergedAt) | .number'
+        )
+        echo "number=$number" >>$GITHUB_OUTPUT
+    - name: Get pull request labels
+      id: labels
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        name=$(
+          gh pr view ${{ steps.pull-request.outputs.number }} \
+            --json labels \
+            --jq '[.labels[].name]'
+        )
+        echo "name=$name" >>$GITHUB_OUTPUT
+
