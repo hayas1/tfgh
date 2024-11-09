@@ -37,19 +37,10 @@ locals {
 }
 
 resource "github_issue_label" "this" {
-  for_each = {
-    for p in setproduct(
-      [for k, v in github_repository.this : { key = k, value = v }],
-      [for k, v in local.labels : { key = k, value = v }]
-    )
-    : "${p[0].key}.${p[1].key}" => {
-      repository = p[0].value
-      label_name = p[1].key
-      label      = p[1].value
-    }
-  }
-  repository  = each.value.repository.name
-  name        = each.value.label_name
-  color       = each.value.label.color
-  description = each.value.label.description
+  for_each = local.labels
+
+  repository  = github_repository.this.name
+  name        = each.key
+  color       = each.value.color
+  description = each.value.description
 }

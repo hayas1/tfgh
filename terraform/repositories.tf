@@ -10,6 +10,8 @@ locals {
 }
 
 module "repositories" {
-  source       = "./module/repository"
-  repositories = local.repositories
+  for_each = local.repositories
+  source   = "./module/repository"
+  name     = each.key
+  repo     = each.value
 }

@@ -62,16 +62,16 @@ These GitHub Environments host some secrets for terraform plan/apply in GitHub A
 # Operations
 ## Add or import repository
 Add repository to [/terraform/repositories.tf](/terraform/repositories.tf).
-### Import
+### Import example
 ```sh
-terraform import 'module.repositories.github_repository.this["tfgh"]' tfgh
+terraform import 'module.repositories["tfgh"].github_repository.this' tfgh
 ```
 
 ## Delete or remove repository
 Delete repository from [/terraform/repositories.tf](/terraform/repositories.tf).
-### Remove
+### Remove example
 ```sh
-terraform state rm 'module.repositories.github_repository.this["tfgh"]'
+terraform state rm 'module.repositories["tfgh"].github_repository.this'
 ```
 
 ## Manual operation

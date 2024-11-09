@@ -1,8 +1,8 @@
 resource "github_repository" "this" {
-  for_each = var.repositories
-  name     = each.key
+  name = var.name
 
-  visibility             = each.value.visibility
+  visibility             = var.repo.visibility
+  description            = var.repo.description
   delete_branch_on_merge = true
 
   lifecycle {
@@ -11,9 +11,8 @@ resource "github_repository" "this" {
 }
 
 resource "github_repository_ruleset" "this" {
-  for_each    = github_repository.this
   name        = "default"
-  repository  = each.value.name
+  repository  = github_repository.this.name
   target      = "branch"
   enforcement = "active"
 
