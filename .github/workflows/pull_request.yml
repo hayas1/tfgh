@@ -6,14 +6,14 @@ on:
 
 jobs:
   plan:
-    if: !github.event.pull_request.merged
+    if: github.event.pull_request.merged == false
     uses: ./.github/workflows/terraform.yml
     with:
       terraform: plan
     secrets: inherit
 
   apply:
-    if: github.event.pull_request.merged && !contains(github.event.pull_request.labels.*.name, 'manual')
+    if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'manual')
     uses: ./.github/workflows/terraform.yml
     with:
       terraform: apply
