@@ -6,7 +6,15 @@ on:
 
 jobs:
   plan:
+    if: !github.event.pull_request.merged
     uses: ./.github/workflows/terraform.yml
     with:
       terraform: plan
+    secrets: inherit
+
+  apply:
+    if: github.event.pull_request.merged && !contains(github.event.pull_request.labels.*.name, 'manual')
+    uses: ./.github/workflows/terraform.yml
+    with:
+      terraform: apply
     secrets: inherit
