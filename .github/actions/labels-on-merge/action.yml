@@ -5,6 +5,10 @@ inputs:
   commit:
     description: 'merge commit sha'
     required: true
+  default-branch:
+    description: 'default branch name'
+    required: false
+    default: main
   github-token:
     description: 'github token'
     required: true
@@ -20,6 +24,9 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.default-branch }}
+        token: ${{ inputs.github-token }}
     - name: Find associated latest pull request
       id: pull-request
       shell: bash
