@@ -1,4 +1,4 @@
-name: Terraform plan on pull request
+name: Terraform plan on pull request and apply on merged
 
 on:
   pull_request:
