@@ -11,7 +11,7 @@ jobs:
       label: ${{ steps.labels-on-merge.outputs.labels }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./github/actions/labels-on-merge
+      - uses: ./.github/actions/labels-on-merge
         id: labels-on-merge
         with:
           commit: ${{ github.sha }}
