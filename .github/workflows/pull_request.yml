@@ -5,6 +5,20 @@ on:
     branches: ["main"]
 
 jobs:
+  debug:
+    needs: plan
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.labels-on-merge.outputs.labels }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./github/actions/labels-on-merge
+        id: labels-on-merge
+        with:
+          commit: ${{ github.sha }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo ${{ steps.labels-on-merge.outputs.labels }}
+
   plan:
     uses: ./.github/workflows/terraform.yml
     with:
