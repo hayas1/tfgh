@@ -74,7 +74,7 @@ Delete repository from [/terraform/repositories.tf](/terraform/repositories.tf).
 terraform state rm 'module.repositories.github_repository.this["tfgh"]'
 ```
 
-## Terraform Plan / Apply in local machine
+## Manual operation
 Authenticate to GitHub and Terraform Cloud. `terraform login` require authorization token from Terraform Cloud.
 ```sh
 gh auth login
@@ -88,3 +88,7 @@ terraform init
 terraform plan
 terraform apply
 ```
+
+## Do not Terraform Apply in GitHub Actions
+Pull request labeled with `manual` will not be applied in GitHub Actions on merged.
+Should do terraform apply in local machine as [manual operation section](#manual-operation).
