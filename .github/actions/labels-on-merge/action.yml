@@ -1,3 +1,4 @@
+# push event is not associated with pull request, so this action is needed
 name: Find pull request labels on merge
 
 inputs:
