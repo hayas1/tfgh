@@ -76,4 +76,6 @@ resource "github_repository_pull_request" "managed" {
   head_ref        = local.managed_pr_branch
   title           = local.managed_pr_title
   body            = local.managed_pr_body
+
+  depends_on = [github_repository_file.pull_request_template]
 }
