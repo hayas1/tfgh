@@ -1,4 +1,4 @@
-name: Terraform plan on pull request
+name: Terraform plan on pull request and apply on merged
 
 on:
   pull_request:
@@ -6,7 +6,15 @@ on:
 
 jobs:
   plan:
+    if: github.event.pull_request.merged == false
     uses: ./.github/workflows/terraform.yml
     with:
       terraform: plan
+    secrets: inherit
+
+  apply:
+    if: github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'manual')
+    uses: ./.github/workflows/terraform.yml
+    with:
+      terraform: apply
     secrets: inherit
