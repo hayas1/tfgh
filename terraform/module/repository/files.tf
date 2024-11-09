@@ -1,4 +1,3 @@
-
 locals {
   managed_pr_branch                = "chore/managed-by-terraform"
   managed_pr_commit_message_prefix = "Managed by Terraform"
@@ -13,10 +12,13 @@ locals {
 resource "github_repository_file" "this" {
   for_each = local.github_files
 
-  repository          = github_repository.this.name
-  branch              = local.managed_pr_branch
-  file                = ".${each.value}"
-  content             = join("\n", [file("${path.module}/${each.value}"), try(var.repo.additional_file_content[each.value], "")])
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  file       = ".${each.value}"
+  content = join("\n", [
+    file("${path.module}/${each.value}"),
+    try(var.repo.additional_file_content[each.value], "")
+  ])
   commit_message      = "${local.managed_pr_commit_message_prefix}: .${each.value}"
   overwrite_on_create = true
 
