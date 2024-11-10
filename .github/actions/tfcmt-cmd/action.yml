@@ -57,7 +57,7 @@ runs:
             terraform state list |
               grep 'github_repository_pull_request.managed' |
               sed -e 's|module\.repositories\["\(.*\)"\]\.github_repository_pull_request\.managed|\1|g' |
-              xargs -I{} echo '-replace module.repositories[\"{}\"].github_repository_pull_request.managed'
+              xargs -I{} echo  "-replace 'module.repositories[\"{}\"].github_repository_pull_request.managed'"
           )
         else
           replace=""
