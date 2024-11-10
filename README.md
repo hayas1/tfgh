@@ -91,6 +91,19 @@ terraform plan
 terraform apply
 ```
 
+> [!NOTE]
+> When manual operation, update files in `.github/workflows` may be failed. Please run `gh auth refresh -s workflow` because `workflow` scope is required.
+> - https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
+> ```hcl
+> ╷
+> │ Error: PUT https://api.github.com/repos/hayas1/tfgh/contents/.github/workflows/labeler.yml: 404 Not Found []
+> │
+> │   with module.repositories["tfgh"].github_repository_file.this["github/workflows/labeler.yml"],
+> │   on module/repository/files.tf line 12, in resource "github_repository_file" "this":
+> │   12: resource "github_repository_file" "this" {
+> │
+> ```
+
 ## Do not Terraform Apply in GitHub Actions
 Pull request labeled with `manual` will not be applied in GitHub Actions on merged.
 Should do terraform apply in local machine as [manual operation section](#manual-operation).
