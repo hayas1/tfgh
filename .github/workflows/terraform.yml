@@ -25,6 +25,7 @@ on:
 jobs:
   labels:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.terraform }}
     outputs:
       label: ${{ steps.labels-on-merge.outputs.labels || steps.pr-labels.outputs.labels || '[]' }}
     steps:
