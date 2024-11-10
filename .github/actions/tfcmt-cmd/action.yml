@@ -21,6 +21,11 @@ inputs:
     options:
       - plan
       - apply
+  labels:
+    description: 'pull request labels'
+    required: false
+    type: string
+    default: '[]'
   github-token:
     description: 'github token'
     required: true
@@ -44,13 +49,18 @@ runs:
       shell: bash
       id: run-args
       run: |
+        if [[ "${{ contains(fromJson(inputs.labels), 'update-files') }}" ]]; then
+          replace="-replace 'module.repositories.github_repository_pull_request.managed'"
+        else
+          replace=""
+        fi
         case "${{ inputs.terraform }}" in
           plan)
-            echo "cmd=" >>$GITHUB_OUTPUT
+            echo "cmd=$replace" >>$GITHUB_OUTPUT
             echo "patch=-patch=${{ inputs.patch }}" >>$GITHUB_OUTPUT
             ;;
           apply)
-            echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
+            echo "cmd=-auto-approve $replace" >>$GITHUB_OUTPUT
             echo "patch=" >>$GITHUB_OUTPUT
             ;;
           *)
