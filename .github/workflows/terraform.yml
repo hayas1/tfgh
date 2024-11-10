@@ -40,7 +40,8 @@ jobs:
         if: github.event_name == 'pull_request'
         id: pr-labels
         run:
-          echo 'labels="${{ toJson(github.event.pull_request.labels.*.name) }}"' >>$GITHUB_OUTPUT
+          labels=$(jq -c <<< '${{ github.event.pull_request.labels.*.name }}')
+          echo 'labels=$labels' >>$GITHUB_OUTPUT
 
   terraform:
     needs: labels
