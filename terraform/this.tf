@@ -1,6 +1,10 @@
 resource "github_repository_environment" "plan" {
   environment = "plan"
   repository  = module.repositories.tfgh.managed.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 resource "github_repository_environment" "apply" {
   environment = "apply"
@@ -9,6 +13,10 @@ resource "github_repository_environment" "apply" {
   deployment_branch_policy {
     protected_branches     = true
     custom_branch_policies = false
+  }
+
+  lifecycle {
+    prevent_destroy = true
   }
 }
 
