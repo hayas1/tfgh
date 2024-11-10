@@ -49,7 +49,7 @@ runs:
       shell: bash
       id: run-args
       run: |
-        if [[ ${{ contains(fromJson(inputs.labels), 'update-files') }} = "true" ]]; then
+        if [[ ${{ contains(fromJson(inputs.labels), 'update-files') == true }} = "true" ]]; then
           replace="-replace 'module.repositories.github_repository_pull_request.managed'"
         else
           replace=""
