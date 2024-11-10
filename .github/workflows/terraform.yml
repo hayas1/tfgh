@@ -39,7 +39,7 @@ jobs:
       - name: Pull request labels
         if: github.event_name == 'pull_request'
         id: pr-labels
-        run:
+        run: |
           labels=$(jq -c <<< '${{ toJson(github.event.pull_request.labels.*.name) }}')
           echo 'labels=$labels' >>$GITHUB_OUTPUT
 
