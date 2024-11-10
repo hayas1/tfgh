@@ -79,4 +79,5 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} ${{ steps.run-args.outputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} ${{ steps.run-args.outputs.patch }} \
+          -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
