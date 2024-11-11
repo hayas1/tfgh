@@ -50,7 +50,7 @@ runs:
       working-directory: ${{ inputs.directory }}
       id: run-args
       run: |
-        if [[ "${{ contains(fromJson(inputs.labels), 'update-files') }}" = "true" ]]; then
+        if [[ "${{ contains(fromJson(inputs.labels), 'update-snippets') }}" = "true" ]]; then
           # replace="-replace 'module.repositories.*.github_repository_pull_request.managed'"
           # https://github.com/hashicorp/terraform/issues/30350
           replace=$(

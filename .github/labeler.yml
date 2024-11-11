@@ -42,7 +42,7 @@ maintenance:
     - '^workflow/'
     - '^chore/'
 
-update-files:
+update-snippets:
   - changed-files:
     - any-glob-to-any-file:
       - 'terraform/module/repository/github/**'
