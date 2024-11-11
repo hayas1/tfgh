@@ -38,8 +38,11 @@ For terraform plan/apply in GitHub Actions, GitHub App is configured.
 > https://registry.terraform.io/providers/integrations/github/latest/docs
 
 > [!NOTE]
-> Terraform Plan apps has `contents:write` permission. If it is not granted, terraform plan cause unexpected behavior and confusing diffs.
-> https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository
+> Terraform Plan apps has `contents:write` and `administration:write` permissions. If it is not granted, terraform plan cause unexpected behavior and confusing diffs.
+> - https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository
+> - https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset
+>
+> When update permissions, should be reviewed in GitHub Apps installation page.
 
 ## GitHub Environments: Terraform Plan / Apply
 For terraform plan/apply in GitHub Actions, GitHub Environment is configured.
