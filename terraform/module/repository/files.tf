@@ -1,16 +1,16 @@
 locals {
   managed_pr_branch                = "chore/managed-by-terraform"
   managed_pr_commit_message_prefix = "Managed by Terraform"
-  managed_pr_title                 = "[auto] files managed by Terraform"
+  managed_pr_title                 = "[auto] snippet files managed by Terraform"
   managed_pr_body = join("\n", [
-    for f in local.github_files : "- .${f}"
+    for f in local.github_snippets : "- .${f}"
   ])
 
-  github_files = fileset(path.module, "github/**")
+  github_snippets = fileset(path.module, "github/**")
 }
 
 resource "github_repository_file" "this" {
-  for_each = local.github_files
+  for_each = local.github_snippets
 
   repository = github_repository.this.name
   branch     = local.managed_pr_branch
