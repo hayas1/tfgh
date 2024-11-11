@@ -23,7 +23,29 @@ on:
         required: true
 
 jobs:
+  labels:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.terraform }}
+    outputs:
+      name: ${{ steps.labels-on-merge.outputs.labels || steps.pr-labels.outputs.labels || '[]' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find pull request labels on merge
+        uses: ./.github/actions/labels-on-merge
+        if: github.event_name == 'push'
+        id: labels-on-merge
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull request labels
+        if: github.event_name == 'pull_request'
+        id: pr-labels
+        run: |
+          labels=$(jq -c <<< '${{ toJson(github.event.pull_request.labels.*.name) }}')
+          echo "labels=$labels" >>$GITHUB_OUTPUT
+
   terraform:
+    needs: labels
+    if: inputs.terraform == 'plan' || inputs.terraform == 'apply' && contains(fromJson(needs.labels.outputs.name), 'manual') == false
     runs-on: ubuntu-latest
     environment: ${{ inputs.terraform }}
     timeout-minutes: 20
@@ -46,6 +68,7 @@ jobs:
           directory: terraform
       - uses: ./.github/actions/tfcmt-cmd
         with:
+          labels: ${{ needs.labels.outputs.name }}
           directory: terraform
           terraform: ${{ inputs.terraform }}
           github-token: ${{ steps.app-token.outputs.token }}

@@ -21,6 +21,11 @@ inputs:
     options:
       - plan
       - apply
+  labels:
+    description: 'pull request labels'
+    required: false
+    type: string
+    default: '[]'
   github-token:
     description: 'github token'
     required: true
@@ -42,15 +47,28 @@ runs:
 
     - name: Terraform run args
       shell: bash
+      working-directory: ${{ inputs.directory }}
       id: run-args
       run: |
+        if [[ "${{ contains(fromJson(inputs.labels), 'update-files') }}" = "true" ]]; then
+          # replace="-replace 'module.repositories.*.github_repository_pull_request.managed'"
+          # https://github.com/hashicorp/terraform/issues/30350
+          replace=$(
+            terraform state list |
+              grep 'github_repository_pull_request.managed' |
+              sed -e 's|module\.repositories\["\(.*\)"\]\.github_repository_pull_request\.managed|\1|g' |
+              xargs -I{} echo  "-replace 'module.repositories[\"{}\"].github_repository_pull_request.managed'"
+          )
+        else
+          replace=""
+        fi
         case "${{ inputs.terraform }}" in
           plan)
-            echo "cmd=" >>$GITHUB_OUTPUT
+            echo "cmd=$replace" >>$GITHUB_OUTPUT
             echo "patch=-patch=${{ inputs.patch }}" >>$GITHUB_OUTPUT
             ;;
           apply)
-            echo "cmd=-auto-approve" >>$GITHUB_OUTPUT
+            echo "cmd=-auto-approve $replace" >>$GITHUB_OUTPUT
             echo "patch=" >>$GITHUB_OUTPUT
             ;;
           *)
@@ -62,4 +80,5 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        tfcmt ${{ inputs.terraform }} ${{ steps.run-args.outputs.patch }} -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
+        tfcmt ${{ inputs.terraform }} ${{ steps.run-args.outputs.patch }} \
+          -- terraform ${{ inputs.terraform }} ${{ steps.run-args.outputs.cmd }} -no-color -input=false
