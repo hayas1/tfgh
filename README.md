@@ -76,7 +76,7 @@ terraform import 'module.repositories["tfgh"].github_branch_default.this' tfgh
 Delete repository from [/terraform/repositories.tf](/terraform/repositories.tf).
 ### Remove example
 ```sh
- terraform state rm 'module.repositories["tfgh"]'
+terraform state rm 'module.repositories["tfgh"]'
 ```
 
 ## Manual operation
