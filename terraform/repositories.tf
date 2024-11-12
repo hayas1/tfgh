@@ -7,6 +7,9 @@ locals {
         "github/labeler.yml" = file("${path.module}/tfgh/github/labeler.yml")
       }
     }
+    dyson-rs = {
+      default_branch = "master"
+    }
   }
 }
 
