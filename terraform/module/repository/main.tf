@@ -2,7 +2,6 @@ resource "github_repository" "this" {
   name = var.name
 
   visibility             = var.repo.visibility
-  description            = var.repo.description
   delete_branch_on_merge = true
 
   lifecycle {
