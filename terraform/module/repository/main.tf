@@ -2,12 +2,16 @@ resource "github_repository" "this" {
   name = var.name
 
   visibility             = var.repo.visibility
-  description            = var.repo.description
   delete_branch_on_merge = true
+
+  has_downloads = var.repo.has_downloads
+  has_issues    = var.repo.has_issues
+  has_projects  = var.repo.has_projects
+  has_wiki      = var.repo.has_wiki
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [pages]
+    ignore_changes  = [description, pages]
   }
 }
 
