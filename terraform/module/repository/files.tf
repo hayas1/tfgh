@@ -22,8 +22,13 @@ resource "github_repository_file" "this" {
   commit_message      = "${local.managed_pr_commit_message_prefix}: .${each.value}"
   overwrite_on_create = true
 
-  autocreate_branch               = true
-  autocreate_branch_source_branch = github_branch_default.this.branch
+  depends_on = [github_branch.managed]
+}
+
+resource "github_branch" "managed" {
+  repository    = github_repository.this.name
+  branch        = local.managed_pr_branch
+  source_branch = github_branch_default.this.branch
 }
 
 resource "github_repository_pull_request" "managed" {
@@ -33,5 +38,5 @@ resource "github_repository_pull_request" "managed" {
   title           = local.managed_pr_title
   body            = local.managed_pr_body
 
-  depends_on = [github_repository_file.this]
+  depends_on = [github_branch.managed]
 }
