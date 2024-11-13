@@ -8,6 +8,7 @@ locals {
     }
     devcontainer-features = {
       default_branch = "main"
+      has_wiki       = true
     }
     dyson-rs = {
       default_branch = "master"
