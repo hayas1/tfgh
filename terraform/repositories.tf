@@ -7,6 +7,9 @@ locals {
         "github/labeler.yml" = file("${path.module}/additional/tfgh/github/labeler.yml")
       }
     }
+    devcontainer-features = {
+      default_branch = "main"
+    }
     dyson-rs = {
       default_branch = "master"
     }
