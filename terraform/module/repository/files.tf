@@ -38,5 +38,5 @@ resource "github_repository_pull_request" "managed" {
   title           = local.managed_pr_title
   body            = local.managed_pr_body
 
-  depends_on = [github_branch.managed]
+  depends_on = [github_branch.managed, github_repository_file.this]
 }
