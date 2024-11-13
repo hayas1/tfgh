@@ -46,3 +46,4 @@ update-snippets:
   - changed-files:
     - any-glob-to-any-file:
       - 'terraform/module/repository/github/**'
+      - 'terraform/additional/**'
