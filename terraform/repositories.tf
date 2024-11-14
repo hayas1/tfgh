@@ -10,6 +10,9 @@ locals {
     dyson-rs = {
       default_branch = "master"
     }
+    json-with-comments = {
+      default_branch = "master"
+    }
   }
 }
 
