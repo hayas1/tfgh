@@ -26,10 +26,3 @@ resource "github_issue_label" "manual" {
   color       = "5319E7"
   description = "Do not terraform apply on merge, manual operation required"
 }
-
-resource "github_issue_label" "update-snippets" {
-  repository  = module.repositories.tfgh.managed.name
-  name        = "update-snippets"
-  color       = "E9C4AA"
-  description = "Replace pull request managed by terraform"
-}
