@@ -39,4 +39,7 @@ resource "github_repository_pull_request" "managed" {
   body            = local.managed_pr_body
 
   depends_on = [github_branch.managed, github_repository_file.this]
+  lifecycle {
+    replace_triggered_by = [github_repository_file.this]
+  }
 }
