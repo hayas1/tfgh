@@ -21,11 +21,6 @@ inputs:
     options:
       - plan
       - apply
-  labels:
-    description: 'pull request labels'
-    required: false
-    type: string
-    default: '[]'
   github-token:
     description: 'github token'
     required: true

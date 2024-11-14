@@ -68,7 +68,6 @@ jobs:
           directory: terraform
       - uses: ./.github/actions/tfcmt-cmd
         with:
-          labels: ${{ needs.labels.outputs.name }}
           directory: terraform
           terraform: ${{ inputs.terraform }}
           github-token: ${{ steps.app-token.outputs.token }}
