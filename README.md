@@ -111,5 +111,3 @@ terraform apply
 Pull request labeled with `manual` will not be applied in GitHub Actions on merged.
 Should do terraform apply in local machine as [manual operation section](#manual-operation).
 
-## Update repository snippets
-Modify repository snippets in [/terraform/module/repository/github](/terraform/module/repository/github). When Create pull request, it will be labeled with `update-snippets`. When merge it, terraform apply will be executed in GitHub Actions like `-replace 'module.repositories.*.github_repository_pull_request.managed'`(actually, splat expansion is not supported here) for recreate pull request to update snippets.
