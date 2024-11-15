@@ -38,3 +38,26 @@ resource "github_repository_pull_request" "managed" {
 }
 ```
 
+### Create pull request branch previously
+Next approach is to create a branch first and then create a pull request. The drawback of this method is that the branch will be deleted when the pull request is merged. When the branch is deleted, next terraform plan will try to create the branch.
+```hcl
+resource "github_branch" "managed" {
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+}
+resource "github_repository_file" "this" {
+  for_each = local.github_snippets
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  ...
+  overwrite_on_create             = true
+  autocreate_branch               = false
+  depends_on = [github_branch.managed]
+}
+resource "github_repository_pull_request" "managed" {
+  base_repository = github_repository.this.name
+  base_ref        = github_branch_default.this.branch
+  head_ref        = local.managed_pr_branch
+  ...
+}
+```
