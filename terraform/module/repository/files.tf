@@ -51,6 +51,6 @@ resource "github_repository_pull_request" "managed" {
 
   depends_on = [github_repository_file.this]
   lifecycle {
-    replace_triggered_by = [github_repository_file.this]
+    replace_triggered_by = [github_repository_file.readme, github_repository_file.this]
   }
 }
