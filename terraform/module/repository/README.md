@@ -11,7 +11,7 @@ The free tier terraform cloud can only manage 500 resources.
 
 Therefore, it is easy to avoid this limit by using `github_repository_labels`. However, `github_repository_labels` also needs to manage the default `good-first-issue` label and the `no-changes` label created by tfcmt, and so on. This is a lot of work, so we will adopt `github_repository_label`, and consider removing old repositories from Terraform management when we hit the 500 resource limit.
 
-## Struggle with default branch ruleset and labeler workflows
+## Struggle to manage both default branch ruleset and labeler workflows
 Prerequisites:
 - The workflows such as labeler is managed in many repositories, so they should be managed by Terraform in default branch.
 - The rulesets that deny directly push to default branch is set in managed repositories, so they should be managed by Terraform.
@@ -53,6 +53,71 @@ resource "github_repository_file" "this" {
   overwrite_on_create             = true
   autocreate_branch               = false
   depends_on = [github_branch.managed]
+}
+resource "github_repository_pull_request" "managed" {
+  base_repository = github_repository.this.name
+  base_ref        = github_branch_default.this.branch
+  head_ref        = local.managed_pr_branch
+  ...
+}
+```
+
+### One file and branch for pull request
+The problem of basic approach is the order of `github_repository_file`. So, consider creating one file first and then the other.
+But, there is another problem. When `README.md` exists then terraform apply will fail even if set `overwrite_on_create = false`.
+```hcl
+resource "github_repository_file" "readme" {
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  file       = "README.md"
+  content    = ""
+  ...
+  overwrite_on_create             = false
+  autocreate_branch               = true
+  autocreate_branch_source_branch = github_branch_default.this.branch
+}
+resource "github_repository_file" "this" {
+  for_each = local.github_snippets
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  ...
+  overwrite_on_create             = true
+  autocreate_branch               = true
+  depends_on = [github_branch.readme]
+}
+resource "github_repository_pull_request" "managed" {
+  base_repository = github_repository.this.name
+  base_ref        = github_branch_default.this.branch
+  head_ref        = local.managed_pr_branch
+  ...
+}
+```
+
+Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now the problem remains that terraform plan/apply fails if there is no README already in the repository...
+```hcl
+data "github_repository_file" "default_readme" {
+  repository = github_repository.this.name
+  branch     = github_branch_default.this.branch
+  file       = "README.md"
+}
+resource "github_repository_file" "readme" {
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  file       = "README.md"
+  content    = data.github_repository_file.default_readme.content
+  ...
+  overwrite_on_create             = false
+  autocreate_branch               = true
+  autocreate_branch_source_branch = github_branch_default.this.branch
+}
+resource "github_repository_file" "this" {
+  for_each = local.github_snippets
+  repository = github_repository.this.name
+  branch     = local.managed_pr_branch
+  ...
+  overwrite_on_create             = true
+  autocreate_branch               = true
+  depends_on = [github_branch.readme]
 }
 resource "github_repository_pull_request" "managed" {
   base_repository = github_repository.this.name
