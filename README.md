@@ -68,7 +68,6 @@ Add repository to [/terraform/repositories.tf](/terraform/repositories.tf).
 ### Import example
 ```sh
 terraform import 'module.repositories["tfgh"].github_repository.this' tfgh
-terraform import 'module.repositories["tfgh"].github_branch.default' tfgh:main
 terraform import 'module.repositories["tfgh"].github_branch_default.this' tfgh
 ```
 

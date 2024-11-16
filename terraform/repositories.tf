@@ -3,9 +3,6 @@ locals {
     tfgh = {
       default_branch = "main"
     }
-    composite-actions = {
-      default_branch = "main"
-    }
     devcontainer-features = {
       default_branch = "main"
       has_wiki       = true
@@ -14,6 +11,9 @@ locals {
       default_branch = "master"
     }
     json-with-comments = {
+      default_branch = "master"
+    }
+    tokei-toukei = {
       default_branch = "master"
     }
   }
