@@ -3,9 +3,6 @@ locals {
     tfgh = {
       default_branch = "main"
     }
-    composite-actions = {
-      default_branch = "main"
-    }
     devcontainer-features = {
       default_branch = "main"
       has_wiki       = true
