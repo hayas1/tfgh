@@ -9,22 +9,21 @@ locals {
   github_snippets = fileset(path.module, "github/**")
 }
 
-data "github_repository_file" "default_readme" {
-  repository = github_repository.this.name
-  branch     = github_branch_default.this.branch
-  file       = "README.md"
-}
 
 resource "github_repository_file" "readme" {
   repository     = github_repository.this.name
   branch         = local.managed_pr_branch
   file           = "README.md"
-  content        = data.github_repository_file.default_readme.content
+  content        = join("\n", ["# ${github_repository.this.name}", coalesce(github_repository.this.description, " ")])
   commit_message = "${local.managed_pr_commit_message_prefix}: README.md"
 
   overwrite_on_create             = true
   autocreate_branch               = true
   autocreate_branch_source_branch = github_branch_default.this.branch
+
+  lifecycle {
+    ignore_changes = [content]
+  }
 }
 
 resource "github_repository_file" "this" {
