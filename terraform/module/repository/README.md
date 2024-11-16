@@ -94,7 +94,7 @@ resource "github_repository_pull_request" "managed" {
 }
 ```
 
-Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now, the problem is that terraform plan/apply will fail if `README.md` already exists in the repository...
+Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now, the problem is that terraform plan/apply will fail if there is no `README.md` already in the repository...
 ```hcl
 data "github_repository_file" "default_readme" { // here is changed
   repository = github_repository.this.name
