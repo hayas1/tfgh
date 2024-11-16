@@ -38,10 +38,10 @@ resource "github_repository_pull_request" "managed" {
 }
 ```
 
-### Create pull request branch previously
+### Create pull request branch in advance
 Next approach is to create a branch first and then create a pull request. The drawback of this method is that the branch will be deleted when the pull request is merged. When the branch is deleted, next terraform plan will try to create the branch.
 ```hcl
-resource "github_branch" "managed" {
+resource "github_branch" "managed" { // here is changed
   repository = github_repository.this.name
   branch     = local.managed_pr_branch
 }
@@ -51,8 +51,8 @@ resource "github_repository_file" "this" {
   branch     = local.managed_pr_branch
   ...
   overwrite_on_create             = true
-  autocreate_branch               = false
-  depends_on = [github_branch.managed]
+  autocreate_branch               = false // here is changed
+  depends_on = [github_branch.managed] // here is changed
 }
 resource "github_repository_pull_request" "managed" {
   base_repository = github_repository.this.name
@@ -66,13 +66,13 @@ resource "github_repository_pull_request" "managed" {
 The problem of basic approach is the order of `github_repository_file`. So, consider creating one file first and then the other.
 But, there is another problem. When `README.md` exists then terraform apply will fail even if set `overwrite_on_create = false`.
 ```hcl
-resource "github_repository_file" "readme" {
+resource "github_repository_file" "readme" { // here is changed
   repository = github_repository.this.name
   branch     = local.managed_pr_branch
   file       = "README.md"
   content    = ""
   ...
-  overwrite_on_create             = false
+  overwrite_on_create             = false // here is changed
   autocreate_branch               = true
   autocreate_branch_source_branch = github_branch_default.this.branch
 }
@@ -82,8 +82,8 @@ resource "github_repository_file" "this" {
   branch     = local.managed_pr_branch
   ...
   overwrite_on_create             = true
-  autocreate_branch               = true
-  depends_on = [github_branch.readme]
+  autocreate_branch               = false // here is changed
+  depends_on = [github_branch.readme] // here is changed
 }
 resource "github_repository_pull_request" "managed" {
   base_repository = github_repository.this.name
@@ -93,9 +93,9 @@ resource "github_repository_pull_request" "managed" {
 }
 ```
 
-Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now the problem remains that terraform plan/apply fails if there is no README already in the repository...
+Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now the problem remains that terraform plan/apply fails if there is no `README.md` already in the repository...
 ```hcl
-data "github_repository_file" "default_readme" {
+data "github_repository_file" "default_readme" { // here is changed
   repository = github_repository.this.name
   branch     = github_branch_default.this.branch
   file       = "README.md"
@@ -104,7 +104,7 @@ resource "github_repository_file" "readme" {
   repository = github_repository.this.name
   branch     = local.managed_pr_branch
   file       = "README.md"
-  content    = data.github_repository_file.default_readme.content
+  content    = data.github_repository_file.default_readme.content // here is changed
   ...
   overwrite_on_create             = false
   autocreate_branch               = true
@@ -116,7 +116,7 @@ resource "github_repository_file" "this" {
   branch     = local.managed_pr_branch
   ...
   overwrite_on_create             = true
-  autocreate_branch               = true
+  autocreate_branch               = false
   depends_on = [github_branch.readme]
 }
 resource "github_repository_pull_request" "managed" {
