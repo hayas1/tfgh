@@ -13,6 +13,9 @@ locals {
     json-with-comments = {
       default_branch = "master"
     }
+    tokei-toukei = {
+      default_branch = "master"
+    }
   }
 }
 
