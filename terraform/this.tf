@@ -23,6 +23,6 @@ resource "github_repository_environment" "apply" {
 resource "github_issue_label" "manual" {
   repository  = module.repositories.tfgh.managed.name
   name        = "manual"
-  color       = "5319E7"
+  color       = regex("#([0-9A-Fa-f]{0,6})", "#5319E7")[0]
   description = "Do not terraform apply on merge, manual operation required"
 }
