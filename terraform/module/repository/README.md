@@ -3,6 +3,7 @@ In addition to the repository itself, this module manages rulesets, labels, and 
 
 # Implementation
 ## `github_repository_label` vs `github_issue_labels`
+The document of `github_repository_label` and `github_issue_labels` are as follows.
 - https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_label
 - https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_labels
 
