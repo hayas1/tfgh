@@ -65,7 +65,7 @@ resource "github_repository_pull_request" "managed" {
 
 ### One file and branch for pull request
 The problem of basic approach is the order of `github_repository_file`. So, consider creating one file first and then the others.
-But, there is another problem. When `README.md` exists then terraform apply will fail even if set `overwrite_on_create = false`.
+But, there is another problem. When `README.md` exists then terraform apply will fail even if set `overwrite_on_create = false`. So set `ignore_changes = [content]` for `README.md`.
 ```hcl
 resource "github_repository_file" "readme" { // here is changed
   repository = github_repository.this.name
@@ -73,9 +73,13 @@ resource "github_repository_file" "readme" { // here is changed
   file       = "README.md"
   content    = ""
   ...
-  overwrite_on_create             = false // here is changed
+  overwrite_on_create             = true
   autocreate_branch               = true
   autocreate_branch_source_branch = github_branch_default.this.branch
+
+  lifecycle {
+    ignore_changes = [content] // here is changed
+  }
 }
 resource "github_repository_file" "this" {
   for_each = local.github_snippets
@@ -85,40 +89,6 @@ resource "github_repository_file" "this" {
   overwrite_on_create             = true
   autocreate_branch               = false // here is changed
   depends_on = [github_branch.readme] // here is changed
-}
-resource "github_repository_pull_request" "managed" {
-  base_repository = github_repository.this.name
-  base_ref        = github_branch_default.this.branch
-  head_ref        = local.managed_pr_branch
-  ...
-}
-```
-
-Therefore, `README.md` of the default branch is prepared as a data source. So, `README.md` of the default branch is prepared as the data source, and the content of `README.md` of the pull request branch is its content. Now, the problem is that terraform plan/apply will fail if there is no `README.md` already in the repository...
-```hcl
-data "github_repository_file" "default_readme" { // here is changed
-  repository = github_repository.this.name
-  branch     = github_branch_default.this.branch
-  file       = "README.md"
-}
-resource "github_repository_file" "readme" {
-  repository = github_repository.this.name
-  branch     = local.managed_pr_branch
-  file       = "README.md"
-  content    = data.github_repository_file.default_readme.content // here is changed
-  ...
-  overwrite_on_create             = false
-  autocreate_branch               = true
-  autocreate_branch_source_branch = github_branch_default.this.branch
-}
-resource "github_repository_file" "this" {
-  for_each = local.github_snippets
-  repository = github_repository.this.name
-  branch     = local.managed_pr_branch
-  ...
-  overwrite_on_create             = true
-  autocreate_branch               = false
-  depends_on = [github_branch.readme]
 }
 resource "github_repository_pull_request" "managed" {
   base_repository = github_repository.this.name
