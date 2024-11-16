@@ -3,6 +3,7 @@ resource "github_repository" "this" {
 
   visibility             = var.repo.visibility
   delete_branch_on_merge = true
+  auto_init              = true
 
   has_downloads = var.repo.has_downloads
   has_issues    = var.repo.has_issues
@@ -15,18 +16,9 @@ resource "github_repository" "this" {
   }
 }
 
-resource "github_branch" "default" {
-  repository = github_repository.this.name
-  branch     = var.repo.default_branch
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "github_branch_default" "this" {
   repository = github_repository.this.name
-  branch     = github_branch.default.branch
+  branch     = var.repo.default_branch
 
   lifecycle {
     prevent_destroy = true
