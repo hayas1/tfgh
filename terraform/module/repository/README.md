@@ -64,8 +64,9 @@ resource "github_repository_pull_request" "managed" {
 ```
 
 ### One file and branch for pull request
-The problem of basic approach is the order of `github_repository_file`. So, consider creating one file first and then the others.
+The problem of the basic approach is the order of `github_repository_file`. So, consider creating one file first and then the others.
 But, there is another problem. When `README.md` exists then terraform apply will fail even if set `overwrite_on_create = false`. So set `ignore_changes = [content]` for `README.md`.
+But still not enough. If changes are made only in a file other than `README.md`, the branch is not created and terraform apply fails.
 ```hcl
 resource "github_repository_file" "readme" { // here is changed
   repository = github_repository.this.name
@@ -94,36 +95,4 @@ resource "github_repository_pull_request" "managed" {
 }
 ```
 
-Therefore, make the `README.md` of the default branch the `github_repository_file` data source, and make the contents of the branch managed by terraform the same as the default branch. However, if the `README.md` does not exist, the terraform plan will fail...
-```hcl
-data "github_repository_file" "readme" { // here is changed
-  repository = github_repository.this.name
-  branch     = github_branch_default.this.branch
-  file       = "README.md"
-}
-resource "github_repository_file" "readme" {
-  repository = github_repository.this.name
-  branch     = local.managed_pr_branch
-  file       = "README.md"
-  content    = ""
-  ...
-  overwrite_on_create             = true
-  autocreate_branch               = true
-  autocreate_branch_source_branch = github_branch_default.this.branch
-}
-resource "github_repository_file" "this" {
-  for_each = local.github_snippets
-  repository = github_repository.this.name
-  branch     = local.managed_pr_branch
-  ...
-  overwrite_on_create             = true
-  autocreate_branch               = false
-  depends_on = [github_branch.readme]
-}
-resource "github_repository_pull_request" "managed" {
-  base_repository = github_repository.this.name
-  base_ref        = github_branch_default.this.branch
-  head_ref        = local.managed_pr_branch
-  ...
-}
-```
+Therefore, the basic approach maybe better...
