@@ -16,6 +16,9 @@ locals {
     tokei-toukei = {
       default_branch = "master"
     }
+    relentless = {
+      default_branch = "master"
+    }
   }
 }
 
