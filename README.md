@@ -110,3 +110,5 @@ terraform apply
 Pull request labeled with `manual` will not be applied in GitHub Actions on merged.
 Should do terraform apply in local machine as [manual operation section](#manual-operation).
 
+Or, add string such as `[skip ci]` in merge commit message.
+- https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/skipping-workflow-runs
