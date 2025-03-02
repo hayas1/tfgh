@@ -19,6 +19,9 @@ locals {
     relentless = {
       default_branch = "master"
     }
+    coalesced = {
+      default_branch = "master"
+    }
 
     go-fluffy-json = {
       default_branch = "main"
