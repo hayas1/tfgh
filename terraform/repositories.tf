@@ -19,7 +19,7 @@ locals {
     relentless = {
       default_branch = "master"
     }
-    coalesced = {
+    semigroup = {
       default_branch = "master"
     }
 
