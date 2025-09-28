@@ -57,7 +57,7 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: hayas1
+          owner: ${{ github.repository_owner }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:

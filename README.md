@@ -78,6 +78,17 @@ Delete repository from [/terraform/repositories.tf](/terraform/repositories.tf).
 terraform state rm 'module.repositories["tfgh"]'
 ```
 
+## Rename repository
+Rename repository in [/terraform/repositories.tf](/terraform/repositories.tf). And edit tfstate directly...
+### Edit example
+```sh
+terraform state mv 'module.repositories["tfgh"]' 'module.repositories["terraform-github"]'
+terraform state pull > tfgh.json
+jq '.serial += 1' tfgh.json > terraform-github.json
+sed -i terraform-github.json 's/tfgh/terraform-github/g'
+terraform state push terraform-github.json
+```
+
 ## Manual operation
 Authenticate to GitHub and Terraform Cloud. `terraform login` require authorization token from Terraform Cloud.
 ```sh
