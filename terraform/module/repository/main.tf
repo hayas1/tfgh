@@ -5,10 +5,9 @@ resource "github_repository" "this" {
   delete_branch_on_merge = true
   auto_init              = true
 
-  has_downloads = var.repo.has_downloads
-  has_issues    = var.repo.has_issues
-  has_projects  = var.repo.has_projects
-  has_wiki      = var.repo.has_wiki
+  has_issues   = var.repo.has_issues
+  has_projects = var.repo.has_projects
+  has_wiki     = var.repo.has_wiki
 
   lifecycle {
     prevent_destroy = true
