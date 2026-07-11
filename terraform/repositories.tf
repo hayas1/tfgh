@@ -26,6 +26,10 @@ locals {
     go-fluffy-json = {
       default_branch = "main"
     }
+
+    cumulo = {
+      default_branch = "main"
+    }
   }
 }
 
