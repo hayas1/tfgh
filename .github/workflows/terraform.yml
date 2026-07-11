@@ -29,7 +29,7 @@ jobs:
     outputs:
       name: ${{ steps.labels-on-merge.outputs.labels || steps.pr-labels.outputs.labels || '[]' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Find pull request labels on merge
         uses: ./.github/actions/labels-on-merge
         if: github.event_name == 'push'
@@ -50,7 +50,7 @@ jobs:
     environment: ${{ inputs.terraform }}
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Generate a token
         id: app-token
         uses: actions/create-github-app-token@v1

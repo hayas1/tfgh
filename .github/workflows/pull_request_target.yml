@@ -8,6 +8,6 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: echo TODO label trigger and plan on merged branch
 
