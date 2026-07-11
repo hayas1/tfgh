@@ -9,11 +9,17 @@ locals {
   github_snippets = fileset(path.module, "github/**")
 }
 
+resource "github_branch" "managed" {
+  repository    = github_repository.this.name
+  branch        = local.managed_pr_branch
+  source_branch = github_branch_default.this.branch
+}
+
 resource "github_repository_file" "this" {
   for_each = local.github_snippets
 
   repository = github_repository.this.name
-  branch     = local.managed_pr_branch
+  branch     = github_branch.managed.branch
   file       = ".${each.value}"
   content = join("\n", [
     file("${path.module}/${each.value}"),
@@ -21,9 +27,7 @@ resource "github_repository_file" "this" {
   ])
   commit_message = "${local.managed_pr_commit_message_prefix}: .${each.value}"
 
-  overwrite_on_create             = true
-  autocreate_branch               = true
-  autocreate_branch_source_branch = github_branch_default.this.branch
+  overwrite_on_create = true
 }
 
 resource "github_repository_pull_request" "managed" {
