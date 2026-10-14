@@ -30,6 +30,10 @@ locals {
     cumulo = {
       default_branch = "main"
     }
+
+    lithify = {
+      default_branch = "main"
+    }
   }
 }
 
